@@ -1,4 +1,4 @@
-# AI Open Telemetry
+# VS Code Copilot Open Telemetry
 
 A local observability sandbox for capturing and visualizing telemetry from GitHub Copilot Chat. It collects traces emitted by VS Code via OTLP, routes them through an OpenTelemetry Collector, and makes them available in Jaeger (traces) and Grafana (dashboards).
 

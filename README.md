@@ -4,18 +4,15 @@ A local observability sandbox for capturing and visualizing telemetry from GitHu
 
 ## Architecture
 
-```
-VS Code (Copilot Chat)
-        |
-        | OTLP HTTP (port 4318) or gRPC (port 4317)
-        v
-OTel Collector  -----> Jaeger  (port 16686)
-        |
-        v
-  Prometheus            (port 9090)
-        |
-        v
-    Grafana             (port 3000)
+```mermaid
+flowchart TD
+        vscode[VS Code<br/>Copilot Chat] -->|OTLP HTTP :4318<br/>or gRPC :4317| collector[OTel Collector]
+        collector -->|Traces| jaeger[Jaeger<br/>:16686]
+        collector -->|Metrics| prometheus[Prometheus<br/>:9090]
+        prometheus -->|Dashboards| grafana[Grafana<br/>:3000]
+        jaeger -. Trace exploration .-> grafana
+  collector -. Optional OTLP / Elastic path .-> elastic[Elasticsearch]
+  elastic -. Optional UI .-> kibana[Kibana]
 ```
 
 **Services**
@@ -95,3 +92,4 @@ Restart VS Code after setting environment variables.
 
 - **Traces:** Open [Jaeger](http://localhost:16686) and search for the `copilot` service.
 - **Dashboards:** Open [Grafana](http://localhost:3000) — credentials: `admin` / `not4long`.
+- **Optional Kibana path:** Not included in this repo today, but the diagram shows where an Elasticsearch/Kibana branch could sit if you want to test an Elastic-based OTEL pipeline later.

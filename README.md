@@ -1,16 +1,14 @@
 # VS Code Copilot Open Telemetry
 
-A local observability sandbox for capturing and visualizing telemetry from GitHub Copilot Chat. It collects traces emitted by VS Code via OTLP, routes them through an OpenTelemetry Collector, and makes them available in Jaeger (traces) and Grafana (dashboards).
+A local observability sandbox for capturing and visualizing telemetry from GitHub Copilot Chat. It collects traces emitted by VS Code via OTLP, routes them through an OpenTelemetry Collector, and makes them available in Grafana (dashboards).
 
 ## Architecture
 
 ```mermaid
 flowchart TD
         vscode[VS Code<br/>Copilot Chat] -->|OTLP HTTP :4318<br/>or gRPC :4317| collector[OTel Collector]
-        collector -->|Traces| jaeger[Jaeger<br/>:16686]
         collector -->|Metrics| prometheus[Prometheus<br/>:9090]
         prometheus -->|Dashboards| grafana[Grafana<br/>:3000]
-        jaeger -. Trace exploration .-> grafana
   collector -. Optional OTLP / Elastic path .-> elastic[Elasticsearch]
   elastic -. Optional UI .-> kibana[Kibana]
 ```
@@ -20,9 +18,8 @@ flowchart TD
 | Service | Port | Purpose |
 |---|---|---|
 | OTel Collector | 4317, 4318 | Receives OTLP traces from VS Code |
-| Jaeger | 16686 | Trace visualization |
 | Prometheus | 9090 | Metrics storage (scrapes OTel Collector) |
-| Grafana | 3000 | Dashboards (queries Prometheus and Jaeger) |
+| Grafana | 3000 | Dashboards (queries Prometheus) |
 
 ## Sandbox Launch
 
@@ -90,6 +87,5 @@ Restart VS Code after setting environment variables.
 
 ## Viewing Data
 
-- **Traces:** Open [Jaeger](http://localhost:16686) and search for the `copilot` service.
 - **Dashboards:** Open [Grafana](http://localhost:3000) — credentials: `admin` / `not4long`.
 - **Optional Kibana path:** Not included in this repo today, but the diagram shows where an Elasticsearch/Kibana branch could sit if you want to test an Elastic-based OTEL pipeline later.

@@ -2,6 +2,8 @@
 
 A local observability sandbox for capturing and visualizing telemetry from GitHub Copilot Chat. It collects traces emitted by VS Code via OTLP, routes them through an OpenTelemetry Collector, and makes them available in Grafana (dashboards).
 
+![Dashboard](assets/Screenshot_2026-07-22_225740.png)
+
 ## Architecture
 
 ```mermaid
